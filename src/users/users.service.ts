@@ -3,8 +3,6 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from './entities/user.entity';
 import { S3 } from 'aws-sdk';
-// import { Express } from 'express'; 
-// import Multer from 'multer'; //
 
 @Injectable()
 export class UsersService {
@@ -31,7 +29,7 @@ export class UsersService {
     return this.usersRepository.save(user);
   }
 
-  private uploadFileToS3(file: Express.Multer.File) {
+  private async uploadFileToS3(file: Express.Multer.File) {
     const params = {
       Bucket: process.env.AWS_S3_BUCKET_NAME,
       Key: `${Date.now()}-${file.originalname}`,
@@ -39,6 +37,8 @@ export class UsersService {
       ContentType: file.mimetype,
     };
 
-    return this.s3.upload(params).promise();
+    const uploadResult = await this.s3.upload(params).promise();
+    console.log('File uploaded to S3:', uploadResult.Location); 
+    return uploadResult;
   }
 }

@@ -1,6 +1,7 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { NestExpressApplication } from '@nestjs/platform-express';
+import { ValidationPipe } from '@nestjs/common';
 import * as multer from 'multer';
 import * as multerS3 from 'multer-s3';
 import { S3 } from 'aws-sdk';
@@ -8,11 +9,6 @@ import * as path from 'path';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
-  console.log({
-    accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
-    region: process.env.AWS_REGION,
-  });
   
   const s3 = new S3({
     accessKeyId: process.env.AWS_ACCESS_KEY_ID,
@@ -29,7 +25,7 @@ async function bootstrap() {
       },
     }),
   }).single('file'));
-
+  app.useGlobalPipes(new ValidationPipe());
   app.useStaticAssets(path.join(__dirname, '..', 'public'));
 
   await app.listen(parseInt(process.env.PORT) || 3000, () => {
