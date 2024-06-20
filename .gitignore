@@ -47,7 +47,6 @@ lerna-debug.log*
 .tmp
 /certs
 *.zip
-.ebextensions
 /scripts
 
 # Runtime data

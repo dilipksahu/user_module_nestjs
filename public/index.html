@@ -9,7 +9,7 @@
     body {
       display: flex;
       justify-content: center;
-      align-items: center;
+      /* align-items: center; */
       height: 100vh;
       margin: 0;
       position: relative;
@@ -17,6 +17,7 @@
 
     .container {
       width: 100%;
+      height: 60vh;
       max-width: 300px; 
       padding: 20px;
       border: 1px solid #ccc;
@@ -25,7 +26,7 @@
     }
 
     form {
-      margin-bottom: 20px;
+      margin-bottom: 10px;
     }
 
     
@@ -64,7 +65,7 @@
     #result {
       margin-top: 20px;
       position: absolute;
-      bottom: 20px;
+      bottom: 10px;
       color: red;
     }
   </style>
@@ -104,7 +105,7 @@
           <p>Name: ${result.name}</p>
           <p>Number: ${result.number}</p>
           <p>Image URL: <a href="${result.imageUrl}" target="_blank">${result.imageUrl}</a></p>
-          <img src="${result.imageUrl}" alt="User Image" style="max-width: 200px;">
+          
         `;
       } else {
         resultDiv.innerHTML = `
