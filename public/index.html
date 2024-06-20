@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>User Form</title>
+  <script>
+    async function submitForm(event) {
+      event.preventDefault(); // Prevent the default form submission
+
+      const form = event.target;
+      const formData = new FormData(form);
+
+      const response = await fetch('/users', {
+        method: 'POST',
+        body: formData
+      });
+
+      const result = await response.json();
+      const resultDiv = document.getElementById('result');
+      if (response.ok) {
+        resultDiv.innerHTML = `
+          <h3>User Created Successfully</h3>
+          <p>ID: ${result.id}</p>
+          <p>Name: ${result.name}</p>
+          <p>Number: ${result.number}</p>
+          <p>Image URL: <a href="${result.imageUrl}" target="_blank">${result.imageUrl}</a></p>
+          <img src="${result.imageUrl}" alt="User Image" style="max-width: 200px;">
+        `;
+      } else {
+        resultDiv.innerHTML = `
+          <h3>Error Creating User</h3>
+          <p>${result.message}</p>
+        `;
+      }
+    }
+  </script>
+</head>
+<body>
+  <form id="userForm" onsubmit="submitForm(event)" enctype="multipart/form-data">
+    <label for="name">Name:</label>
+    <input type="text" id="name" name="name" required><br><br>
+    <label for="number">Number:</label>
+    <input type="text" id="number" name="number" required><br><br>
+    <label for="file">Display Picture:</label>
+    <input type="file" id="file" name="file" required><br><br>
+    <input type="submit" value="Submit">
+  </form>
+
+  <div id="result"></div>
+</body>
+</html>

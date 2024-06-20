@@ -3,7 +3,9 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { UsersModule } from './users/users.module';
 import * as fs from 'fs';
+import { User } from './users/entities/user.entity'; 
 
 @Module({
   imports: [
@@ -19,7 +21,7 @@ import * as fs from 'fs';
       username: process.env.DB_USER,
       password: process.env.DB_PASSWORD,
       database: process.env.DB_NAME,
-      entities: [],
+      entities: [User],
       synchronize: true,
       ssl:  {
         rejectUnauthorized: true,
@@ -31,6 +33,7 @@ import * as fs from 'fs';
         IntegratedSecurity: false,
       }
     }),
+    UsersModule,
   ],
   controllers: [AppController],
   providers: [AppService],
